@@ -72,6 +72,89 @@ SELECT * FROM log;
 
 
 
+definiremos permissões de acesso às views de acordo com o tipo de conta de usuário. Lembre-se de que as views são armazenadas no banco de dados como "tabelas", permitindo que definamos permissões de acesso específicas a esses itens.
+
+Para ilustrar, vamos criar um usuário chamado "gerente" que terá acesso às informações de empregados e departamentos. No entanto, os empregados não terão acesso às informações relacionadas aos departamentos ou gerentes.
+
+
+
+Exemplo de criação de usuário e definição de permissões:
+
+
+
+```
+-- Criação do usuário "gerente"
+CREATE USER 'gerente'@'localhost' IDENTIFIED BY 'senha_gerente';
+
+-- Concedendo permissões para visualizar as views de empregados e departamentos
+GRANT SELECT ON nome_do_banco_de_dados.view_empregados TO 'gerente'@'localhost';
+GRANT SELECT ON nome_do_banco_de_dados.view_departamentos TO 'gerente'@'localhost';
+```
+
+
+
+Lembre-se de adaptar o código acima ao seu ambiente específico e ao nome do banco de dados que você está utilizando.
+
+------
+
+## Criando Gatilhos para Cenário de E-Commerce
+
+
+
+### Objetivo
+
+
+
+A criação de triggers está associada a ações que podem ser executadas antes ou depois da inserção ou atualização de dados. Além disso, em casos de remoção, também podemos utilizar triggers. Vamos criar as seguintes triggers para o cenário de e-commerce:
+
+
+
+1. **Triggers de Remoção (Before Delete)**
+   - Essas triggers serão acionadas antes da remoção de registros.
+   - 
+2. **Triggers de Atualização (Before Update)**
+   - Essas triggers serão acionadas antes da atualização de registros.
+
+
+
+### Exemplo de Trigger para Base
+
+
+
+```
+-- Trigger para remoção (before delete)
+DELIMITER //
+CREATE TRIGGER before_delete_usuario
+BEFORE DELETE ON usuarios
+FOR EACH ROW
+BEGIN
+    -- Realize as ações necessárias antes da remoção do usuário
+    -- Por exemplo, fazer backup dos dados ou registrar a exclusão
+END;
+//
+DELIMITER ;
+
+-- Trigger para atualização (before update)
+DELIMITER //
+CREATE TRIGGER before_update_colaborador
+BEFORE UPDATE ON colaboradores
+FOR EACH ROW
+BEGIN
+    -- Realize as ações necessárias antes da atualização do colaborador
+    -- Por exemplo, verificar se o salário está dentro de limites aceitáveis
+END;
+//
+DELIMITER ;
+```
+
+
+
+
+
+
+
+
+
 ### **Conclusão**
 
 Neste projeto, criamos triggers e procedimentos armazenados para personalizar acessos e automatizar ações no banco de dados MySQL. Isso melhorou a segurança e a eficiência do banco de dados. Você pode personalizar ainda mais o banco de dados para atender às suas necessidades específicas.
